@@ -1,0 +1,13 @@
+﻿<Window x:Class="Viewer.ProcessHost.ProcessHostForm"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow"
+        Height="1" Width="1"
+        WindowStartupLocation="Manual"
+        Top="10800"
+        Left="0"
+        ShowInTaskbar="False">
+    <Grid>
+        
+    </Grid>
+</Window>

@@ -6,11 +6,16 @@ using System.Text;
 namespace Multiprocess.Issue.ViewModels
 {
     using System.Collections.ObjectModel;
+    using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
 
+    //using MediaPlayerHelper.DispatcherServices;
+    using MediaPlayerHelper.MultiProcess;
+
     using Multiprocess.Issue.UserControls;
+
 
     using Telerik.Windows.Controls;
 
@@ -172,10 +177,13 @@ namespace Multiprocess.Issue.ViewModels
         /// </param>
         private void StartVlcVideos(object o)
         {
-            foreach (var vlcMediaPlayerViewModel in vlcMediaPlayerViewModels)
-            {
-                vlcMediaPlayerViewModel.StartVideo(null);
-            }
+            //foreach (var vlcMediaPlayerViewModel in vlcMediaPlayerViewModels)
+            //{
+            //    vlcMediaPlayerViewModel.StartVideo(null);
+            //}
+
+            var mainGrid = this.View.FindName("ContentControl00") as ContentControl;
+            PlayVideoExpernally(mainGrid);
         }
 
         /// <summary>
@@ -195,5 +203,51 @@ namespace Multiprocess.Issue.ViewModels
         #endregion
 
         #endregion
+
+        public IMediaPlayer Player { get; set; }
+
+        private int externalProcessId = 0;
+
+        private IMediaPlayerProxyFactory mediaPlayerProxyFactory;
+
+        public UIElement Media { get; set; }
+
+        /// <summary>
+        /// The dispatcher service used to call to the UI thread and analyze performance
+        /// </summary>
+        //private readonly IDispatcherService dispatcherService = new DispatcherService();
+
+        private void PlayVideoExpernally(ContentControl host)
+        {
+            this.mediaPlayerProxyFactory = new MediaPlayerProxyFactory();
+            var workerThread = new Thread(
+                () =>
+                {
+                    var mediaUri = this.vlcMediaPlayerViewModels[0].VideoUri;
+                    this.Player = this.mediaPlayerProxyFactory.GetPlayerInstance(mediaUri, externalProcessId);
+                    this.externalProcessId = 0;
+
+                    this.Media = this.Player.SetupPlayerObject();
+
+                    if (this.Media != null)
+                    {
+                        Application.Current.Dispatcher.Invoke(
+                            () =>
+                            {
+                                //if (host.Content == null)
+                                //{
+                                //    host.Content = this.Media;
+                                //}
+
+                                if (host != null)
+                                {
+                                    host.Content = this.Media;
+                                }
+                            });
+                    }
+                });
+
+            workerThread.Start();
+        }
     }
 }

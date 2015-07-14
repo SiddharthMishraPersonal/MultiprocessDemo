@@ -18,6 +18,11 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
+        <ContentControl Grid.Row="0" 
+                        x:Name="ContentControl00"
+                        Grid.Column="0"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"></ContentControl>
         <StackPanel Grid.Row="4" 
                 Grid.Column="0" 
                     Orientation="Horizontal"
