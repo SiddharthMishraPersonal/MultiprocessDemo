@@ -7,9 +7,7 @@
 namespace Motorola.IVS.Client.Viewer.ProcessHost.Communication
 {
     using System.ServiceModel;
-
-    using Motorola.IVS.Client;
-    using MediaPlayerHelper.MultiProcess;
+    using MultiProcess.Client;
 
     /// <summary>
     /// This communication contract consists of events fired by the IMediaPlayer that need to be published back to the hosting application.

@@ -6,10 +6,13 @@ using System.Text;
 namespace MediaPlayerHelper.MultiProcess
 {
     using System.Diagnostics;
+    using System.ServiceModel;
     using System.Windows;
     using System.Windows.Threading;
 
     using MediaPlayerHelper.HostedContents;
+
+    using Motorola.IVS.Client.Viewer.ProcessHost.Communication;
 
     using Telerik.Windows.Controls.Docking;
 
@@ -31,6 +34,16 @@ namespace MediaPlayerHelper.MultiProcess
         /// Fires when the streaming status of the video stream has changed.
         /// </summary>
         public event StreamingStatusEventHanlder StreamingStatusChanged;
+
+        /// <summary>
+        /// The URI of the desired video stream.
+        /// </summary>
+        private string channelUri;
+
+        /// <summary>
+        /// The object for communication with the remote media player.
+        /// </summary>
+        private IMediaPlayerServiceContract mediaPlayerServiceProxy;
 
         public MediaPlayerProxy(Process processHost, Uri videoUri)
         {
@@ -72,9 +85,7 @@ namespace MediaPlayerHelper.MultiProcess
             //}
 
 
-            var hostHandle = IntPtr.Zero;
-
-
+            var hostHandle = this.SafeChannelCall(() => this.mediaPlayerServiceProxy.SetupPlayerObject(this.channelUri), IntPtr.Zero);
 
 
             if (Application.Current != null)
@@ -100,6 +111,36 @@ namespace MediaPlayerHelper.MultiProcess
             }
 
             return hostedContent;
+        }
+
+        /// <summary>
+        /// Executes the supplied action with exception handling. Signals a Disconnect state on error.
+        /// </summary>
+        /// <typeparam name="TResult">The type of result the passed-in action will return.</typeparam>
+        /// <param name="action">The action to execute.</param>
+        /// <param name="defaultReturn">The default value to return on error.</param>
+        /// <returns>The return value of the passed-in function.</returns>
+        private TResult SafeChannelCall<TResult>(Func<TResult> action, TResult defaultReturn)
+        {
+            try
+            {
+                return action();
+            }
+            catch (TimeoutException ex)
+            {
+               
+            }
+            catch (CommunicationException ex)
+            {
+               
+            }
+            catch (Exception ex)
+            {
+               
+            }
+
+            this.OnStreamingStatusChanged(ConnectionStatus.Disconnected, string.Empty);
+            return defaultReturn;
         }
 
         private HostedContent CreateHostedContent()
@@ -286,7 +327,8 @@ namespace MediaPlayerHelper.MultiProcess
 
         public bool Initialize(string uri)
         {
-            throw new NotImplementedException();
+            this.channelUri = uri;
+            return true;
         }
 
         public bool IsSDKInstalled()

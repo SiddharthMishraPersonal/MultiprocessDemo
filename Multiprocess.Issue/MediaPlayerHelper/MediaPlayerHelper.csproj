@@ -40,6 +40,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,15 +64,20 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EventArg\PlayerErrorEventArgs.cs" />
     <Compile Include="HostedContents\HostedContent.cs" />
     <Compile Include="HostedContents\NativeMethods.cs" />
     <Compile Include="HostedContents\StaTaskScheduler.cs" />
-    <Compile Include="IVS.Client\StreamingStatistics.cs" />
-    <Compile Include="IVS.Client\Volume.cs" />
+    <Compile Include="IVS.Client\StreamingStatistics.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="IVS.Client\Volume.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MultiProcess\ConnectionStatus.cs" />
     <Compile Include="MultiProcess\IChannelViewModel.cs" />
-    <Compile Include="MultiProcess\IMediaPlayer.cs" />
+    <Compile Include="MultiProcess\IMediaPlayer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="MultiProcess\IMediaPlayerProxyFactory.cs" />
     <Compile Include="MultiProcess\MediaPlayerProxy.cs" />
     <Compile Include="MultiProcess\MediaPlayerProxyFactory.cs" />
@@ -97,6 +103,16 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MultiProcess.Client\MultiProcess.Client.csproj">
+      <Project>{8ef8295d-9d33-4279-b8d1-83d8a929b8be}</Project>
+      <Name>MultiProcess.Client</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Viewer.ProcessHost.Communication\Viewer.ProcessHost.Communication.csproj">
+      <Project>{627f662f-d418-4f4e-845e-125a05af6a7e}</Project>
+      <Name>Viewer.ProcessHost.Communication</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

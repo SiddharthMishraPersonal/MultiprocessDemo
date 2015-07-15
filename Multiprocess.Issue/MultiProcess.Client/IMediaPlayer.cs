@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MediaPlayerHelper.MultiProcess
+namespace MultiProcess.Client
 {
     using System.Windows;
 
-    using global::MultiProcess.Client.EventArg;
-
-    using MediaPlayerHelper.IVS.Client;
+    using MultiProcess.Client.EventArg;
 
     /// <summary>
     /// The player speed.

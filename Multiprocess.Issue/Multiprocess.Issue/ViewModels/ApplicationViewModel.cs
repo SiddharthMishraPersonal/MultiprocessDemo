@@ -227,6 +227,8 @@ namespace Multiprocess.Issue.ViewModels
                     this.Player = this.mediaPlayerProxyFactory.GetPlayerInstance(mediaUri, externalProcessId);
                     this.externalProcessId = 0;
 
+                    this.Player.Initialize(
+                        "http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4");
                     this.Media = this.Player.SetupPlayerObject();
 
                     if (this.Media != null)

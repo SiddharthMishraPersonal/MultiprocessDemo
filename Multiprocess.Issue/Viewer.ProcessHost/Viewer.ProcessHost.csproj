@@ -129,9 +129,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MediaPlayerHelper\MediaPlayerHelper.csproj">
-      <Project>{64b3a370-3394-4f71-ba19-d66da5a347f5}</Project>
-      <Name>MediaPlayerHelper</Name>
+    <ProjectReference Include="..\MultiProcess.Client\MultiProcess.Client.csproj">
+      <Project>{8ef8295d-9d33-4279-b8d1-83d8a929b8be}</Project>
+      <Name>MultiProcess.Client</Name>
     </ProjectReference>
     <ProjectReference Include="..\Viewer.ProcessHost.Communication\Viewer.ProcessHost.Communication.csproj">
       <Project>{627f662f-d418-4f4e-845e-125a05af6a7e}</Project>

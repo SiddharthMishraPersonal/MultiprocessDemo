@@ -16,9 +16,9 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
     using System.Windows.Interop;
 
     using global::Viewer.ProcessHost;
-
-    using MediaPlayerHelper.MultiProcess;
     using Motorola.IVS.Client.Viewer.ProcessHost.EventArgs;
+
+    using MultiProcess.Client;
 
     using Viewer.ProcessHost.Communication;
 
@@ -447,6 +447,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
             this.HostForm.Show();
             var windowHelper = new WindowInteropHelper(this.HostForm);
 
+            hostedControl.MediaPlayer.Play(new Uri(uri));
             return windowHelper.Handle;
         }
 

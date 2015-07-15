@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viewer.ProcessHost", "Viewe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Viewer.ProcessHost.Communication", "Viewer.ProcessHost.Communication\Viewer.ProcessHost.Communication.csproj", "{627F662F-D418-4F4E-845E-125A05AF6A7E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiProcess.Client", "MultiProcess.Client\MultiProcess.Client.csproj", "{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,6 +73,18 @@ Global
 		{627F662F-D418-4F4E-845E-125A05AF6A7E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{627F662F-D418-4F4E-845E-125A05AF6A7E}.Release|x64.ActiveCfg = Release|Any CPU
 		{627F662F-D418-4F4E-845E-125A05AF6A7E}.Release|x86.ActiveCfg = Release|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Release|x64.ActiveCfg = Release|Any CPU
+		{8EF8295D-9D33-4279-B8D1-83D8A929B8BE}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

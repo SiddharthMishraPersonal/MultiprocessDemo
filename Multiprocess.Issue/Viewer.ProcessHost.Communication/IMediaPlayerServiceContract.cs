@@ -9,7 +9,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost.Communication
     using System;
     using System.ServiceModel;
 
-    using MediaPlayerHelper.MultiProcess;
+    using MultiProcess.Client;
 
     /// <summary>
     /// Interface to define the communication between a video plugin's media player and the hosting application.
