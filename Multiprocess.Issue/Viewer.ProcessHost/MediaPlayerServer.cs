@@ -19,6 +19,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
     using Motorola.IVS.Client.Viewer.ProcessHost.EventArgs;
 
     using MultiProcess.Client;
+    using MultiProcess.Client.MediaPlayer;
 
     using Viewer.ProcessHost.Communication;
 
@@ -95,15 +96,22 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
             var uri = @"net.pipe://localhost/viewer.processhost/{0}/{1}";
             var listeningAddress = string.Empty;
 
-            if (!string.IsNullOrEmpty(uri))
+            try
             {
-                listeningAddress = string.Format(uri, Process.GetCurrentProcess().Id, Guid.NewGuid());
-                var serviceHost = this.CreateServiceHost(new Uri(listeningAddress));
+                if (!string.IsNullOrEmpty(uri))
+                {
+                    listeningAddress = string.Format(uri, Process.GetCurrentProcess().Id, Guid.NewGuid());
+                    var serviceHost = this.CreateServiceHost(new Uri(listeningAddress));
 
-                serviceHost.Open();
+                    serviceHost.Open();
+                }
+
+                this.ListeningAddress = listeningAddress;
             }
-
-            this.ListeningAddress = listeningAddress;
+            catch (Exception exception)
+            {   
+                Trace.WriteLine(exception);
+            }
 
             return listeningAddress;
         }
@@ -125,7 +133,18 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// <returns>A value indicating whether Play was successful.</returns>
         public bool Play()
         {
-            return this.SafePlayerCall(() => this.mediaPlayer.Play(), false);
+            bool played = false;
+
+            try
+            {
+                played = this.SafePlayerCall(() => this.mediaPlayer.Play(), false);
+            }
+            catch (Exception exception)
+            {
+                Trace.WriteLine(exception);
+            }
+
+            return played;
         }
 
         /// <summary>
@@ -152,6 +171,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// </summary>
         public void Stop()
         {
+            Trace.WriteLine("Stopped.");
             this.SafePlayerCall(this.mediaPlayer.Stop);
         }
 
@@ -397,28 +417,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
             return serviceHost;
         }
 
-        public VlcControl VlcControl
-        {
-            get
-            {
 
-                try
-                {
-
-                    var control = new VlcControl();
-                    control.MediaPlayer.VlcLibDirectoryNeeded += MediaPlayer_VlcLibDirectoryNeeded;
-                    control.Unloaded += ucVLCMediaPlayerControl_Unloaded;
-                    return control;
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
-
-                return null;
-            }
-        }
 
         void control_Unloaded(object sender, RoutedEventArgs e)
         {
@@ -436,7 +435,12 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// </returns>
         private IntPtr SetupPlayerObjectImpl(string uri)
         {
-            var hostedControl = this.VlcControl;
+            Trace.WriteLine("Called SetupPlayerObjectImpl(string uri)");
+            Trace.WriteLine(uri);
+            
+            this.mediaPlayer = new MediaPlayer();
+            Trace.WriteLine(this.mediaPlayer);
+            var hostedControl = this.mediaPlayer.SetupPlayerObject();
 
             if (!this.Initialize(uri))
             {
@@ -447,30 +451,10 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
             this.HostForm.Show();
             var windowHelper = new WindowInteropHelper(this.HostForm);
 
-            hostedControl.MediaPlayer.Play(new Uri(uri));
+            Trace.WriteLine("Media is playing.");
             return windowHelper.Handle;
         }
 
-        void MediaPlayer_VlcLibDirectoryNeeded(object sender, Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs e)
-        {
-            var currentAssembly = Assembly.GetEntryAssembly();
-            var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
-
-            if (currentDirectory == null)
-                return;
-
-            e.VlcLibDirectory = AssemblyName.GetAssemblyName(currentAssembly.Location).ProcessorArchitecture
-                                == ProcessorArchitecture.X86 ? new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\..\lib\x86")) : new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\..\lib\x64"));
-
-        }
-
-        void ucVLCMediaPlayerControl_Unloaded(object sender, RoutedEventArgs e)
-        {
-            if (this.VlcControl.MediaPlayer.IsPlaying)
-            {
-                this.VlcControl.MediaPlayer.Stop();
-            }
-        }
 
 
         /// <summary>
