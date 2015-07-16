@@ -8,12 +8,25 @@
 			 d:DesignHeight="300" d:DesignWidth="300">
 	<Border BorderBrush="Black"
 				BorderThickness="2"
-				CornerRadius="5"
-				Margin="5">
-		<telerik:RadBusyIndicator x:Name="BusyIndicator" IsIndeterminate="True" BusyContent="Loading Video...">
-			<ContentControl x:Name="ContentControl"
-						HorizontalAlignment="Stretch" 
+				CornerRadius="1"
+				Margin="3">
+		<telerik:RadBusyIndicator x:Name="BusyIndicator" 
+								  IsIndeterminate="True" 
+								  BusyContent="Loading Video...">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"></RowDefinition>
+					<RowDefinition Height="Auto"></RowDefinition>
+				</Grid.RowDefinitions>
+                <Border Grid.Row="0" Margin="3" BorderBrush="Black" BorderThickness="1">
+                    <ContentControl x:Name="ContentControl"
+						HorizontalAlignment="Stretch"
 						VerticalAlignment="Stretch"/>
+                    </Border>
+                <Border Grid.Row="1" Margin="3,0,3,3" BorderBrush="Black" BorderThickness="1">
+				<TextBlock  HorizontalAlignment="Stretch" VerticalAlignment="Bottom" x:Name="VideoUrlTextBlock" Text="No Video"></TextBlock>
+                </Border>
+            </Grid>
 		</telerik:RadBusyIndicator>
 	</Border>
 </UserControl>

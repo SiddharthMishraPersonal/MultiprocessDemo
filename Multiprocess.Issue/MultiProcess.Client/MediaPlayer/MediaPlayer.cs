@@ -38,6 +38,8 @@ namespace MultiProcess.Client.MediaPlayer
                 var control = new VlcControl();
                 control.MediaPlayer.VlcLibDirectoryNeeded += MediaPlayer_VlcLibDirectoryNeeded;
                 control.MediaPlayer.Playing += MediaPlayer_Playing;
+                control.MediaPlayer.EncounteredError += MediaPlayer_EncounteredError;
+                control.MediaPlayer.Opening += MediaPlayer_Opening;
                 this.VlcControl = control;
             }
             catch (Exception)
@@ -45,6 +47,16 @@ namespace MultiProcess.Client.MediaPlayer
 
                 throw;
             }
+        }
+
+        void MediaPlayer_Opening(object sender, Vlc.DotNet.Core.VlcMediaPlayerOpeningEventArgs e)
+        {
+            StreamingStatusChanged(ConnectionStatus.Idle, "");
+        }
+
+        void MediaPlayer_EncounteredError(object sender, Vlc.DotNet.Core.VlcMediaPlayerEncounteredErrorEventArgs e)
+        {
+            StreamingStatusChanged(ConnectionStatus.Interrupted, "VLC Media player encountered an error.");
         }
 
         void MediaPlayer_Playing(object sender, Vlc.DotNet.Core.VlcMediaPlayerPlayingEventArgs e)
@@ -75,21 +87,26 @@ namespace MultiProcess.Client.MediaPlayer
 
         public UIElement SetupPlayerObject()
         {
-            DockPanel dockPanel = new DockPanel(); 
             _playerWinFormHost = new WindowsFormsHost
             {
                 Child = this.VlcControl.MediaPlayer
             };
-
-            dockPanel.Children.Add(_playerWinFormHost);
-
-            return dockPanel;
+            return _playerWinFormHost;
         }
 
         public bool Play()
         {
-            var uri = new Uri(string.IsNullOrEmpty(this.videoUri) ? @"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4" : this.videoUri);
-            this.VlcControl.MediaPlayer.Play(uri);
+            try
+            {
+                var uri = new Uri(string.IsNullOrEmpty(this.videoUri) ? @"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4" : this.videoUri);
+                Trace.WriteLine(uri);
+                this.VlcControl.MediaPlayer.Play(uri);
+            }
+            catch (Exception exception)
+            {
+
+                Trace.WriteLine(exception);
+            }
             return true;
         }
 

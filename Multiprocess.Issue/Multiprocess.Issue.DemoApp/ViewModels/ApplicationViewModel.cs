@@ -268,10 +268,25 @@ namespace Multiprocess.Issue.DemoAppViewModels
 
                     if (isHostUnInitialized)
                     {
+                        var videoUrl = string.Format(@"C:\Video\4KVideo0{0}.mp4", count);
+                        Trace.WriteLine(videoUrl);
                         var mediaUri =
-                            new Uri(
-                                @"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4");
+                            new Uri(videoUrl);
+                        Application.Current.Dispatcher.Invoke(
+                      () =>
+                      {
+                          host.ToolTip = videoUrl;
+                          host.ParentOfType<Border>().ToolTip = videoUrl;
+                          var textBlock = host.ParentOfType<Border>().FindName("VideoUrlTextBlock") as TextBlock;
+                          if (textBlock != null)
+                          {
+                              textBlock.Text = videoUrl;
+                          }
+                      });
+
                         this.Player = this.mediaPlayerProxyFactory.GetPlayerInstance(mediaUri, externalProcessId);
+
+
                         this.externalProcessId = 0;
 
                         if (this.Player != null)
@@ -307,14 +322,12 @@ namespace Multiprocess.Issue.DemoAppViewModels
 
         private void PlayerStreamingStatusChanged(ConnectionStatus status, string errorCode)
         {
-            if (status.Equals(ConnectionStatus.Streaming))
-            {
-                Application.Current.Dispatcher.Invoke(
-                    () =>
-                        {
-                            busyIndicator.IsBusy = false;
-                        });
-            }
+            Application.Current.Dispatcher.Invoke(
+                () =>
+                {
+                    busyIndicator.IsBusy = !status.Equals(ConnectionStatus.Streaming);
+                });
+
         }
     }
 }

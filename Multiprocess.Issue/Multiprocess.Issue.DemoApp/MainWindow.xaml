@@ -22,10 +22,10 @@
                 Grid.Row="0"
                 Grid.Column="0" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-        <ContentControl x:Name="ContentControl0"
+            <ContentControl x:Name="ContentControl0"
                         HorizontalAlignment="Stretch" 
                         VerticalAlignment="Stretch"/>
         </Border>
@@ -33,42 +33,36 @@
                 Grid.Row="0"
                 Grid.Column="1" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl1"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
+
         </Border>
         <Border BorderBrush="Black"
                 Grid.Row="0"
                 Grid.Column="2" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl2"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
+
         </Border>
         <Border BorderBrush="Black"
                 Grid.Row="0"
                 Grid.Column="3" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl3"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
+
         </Border>
 
         <Border BorderBrush="Black"
                 Grid.Row="1"
                 Grid.Column="0" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
             <ContentControl x:Name="ContentControl4"
                         HorizontalAlignment="Stretch" 
@@ -78,19 +72,17 @@
                 Grid.Row="1"
                 Grid.Column="1" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl5"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
+
         </Border>
         <Border BorderBrush="Black"
                 Grid.Row="1"
                 Grid.Column="2" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
             <ContentControl x:Name="ContentControl6"
                         HorizontalAlignment="Stretch" 
@@ -100,19 +92,17 @@
                 Grid.Row="1"
                 Grid.Column="3" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl7"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
+
         </Border>
         <Border BorderBrush="Black"
                 Grid.Row="2"
                 Grid.Column="0" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
             <ContentControl x:Name="ContentControl8"
                         HorizontalAlignment="Stretch" 
@@ -122,30 +112,25 @@
                 Grid.Row="2"
                 Grid.Column="1" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl9"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
         </Border>
         <Border BorderBrush="Black"
                 Grid.Row="2"
                 Grid.Column="2" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl10"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
+
         </Border>
         <Border BorderBrush="Black"
                 Grid.Row="2"
                 Grid.Column="3" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
             <ContentControl x:Name="ContentControl11"
                         HorizontalAlignment="Stretch" 
@@ -155,45 +140,37 @@
                 Grid.Row="3"
                 Grid.Column="0" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl12"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
+
         </Border>
         <Border BorderBrush="Black"
                 Grid.Row="3"
                 Grid.Column="1" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl13"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
+
         </Border>
         <Border BorderBrush="Black"
                 Grid.Row="3"
                 Grid.Column="2" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl14"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
+
         </Border>
         <Border BorderBrush="Black"
                 Grid.Row="3"
                 Grid.Column="3" 
                 BorderThickness="2"
-                CornerRadius="5"
-                Margin="5"
+                CornerRadius="1"
+                Margin="3"
                 >
-            <ContentControl x:Name="ContentControl15"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
+
         </Border>
 
         <StackPanel Grid.Row="4" 
