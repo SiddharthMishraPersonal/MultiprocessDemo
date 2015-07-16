@@ -41,10 +41,23 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// </summary>
         private ProcessHostForm processContent;
 
+        private IMediaPlayer mediaPlayer;
+
         /// <summary>
         /// The hosted Media Player object.
         /// </summary>
-        private IMediaPlayer mediaPlayer;
+        private IMediaPlayer MediaPlayer
+        {
+            get
+            {
+                return mediaPlayer;
+            }
+            set
+            {
+                mediaPlayer = value;
+                Trace.WriteLine("IMediaPlayer setter value :" + value);
+            }
+        }
 
         /// <summary>
         /// The callback channel for raising events back on the client.
@@ -109,7 +122,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
                 this.ListeningAddress = listeningAddress;
             }
             catch (Exception exception)
-            {   
+            {
                 Trace.WriteLine(exception);
             }
 
@@ -124,7 +137,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// <param name="filename">The full path/name of the snapshot file.</param>
         public void TakeSnapshot(string filename)
         {
-            this.SafePlayerCall(() => this.mediaPlayer.TakeSnapshot(filename));
+            this.SafePlayerCall(() => this.MediaPlayer.TakeSnapshot(filename));
         }
 
         /// <summary>
@@ -137,7 +150,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
 
             try
             {
-                played = this.SafePlayerCall(() => this.mediaPlayer.Play(), false);
+                played = this.SafePlayerCall(() => this.MediaPlayer.Play(), false);
             }
             catch (Exception exception)
             {
@@ -155,7 +168,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// <returns>A value indicating whether the operation succeeded.</returns>
         public bool Play(DateTime startTime, DateTime endTime)
         {
-            return this.SafePlayerCall(() => this.mediaPlayer.Play(startTime, endTime), false);
+            return this.SafePlayerCall(() => this.MediaPlayer.Play(startTime, endTime), false);
         }
 
         /// <summary>
@@ -163,7 +176,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// </summary>
         public void Pause()
         {
-            this.SafePlayerCall(this.mediaPlayer.Pause);
+            this.SafePlayerCall(this.MediaPlayer.Pause);
         }
 
         /// <summary>
@@ -172,7 +185,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         public void Stop()
         {
             Trace.WriteLine("Stopped.");
-            this.SafePlayerCall(this.mediaPlayer.Stop);
+            this.SafePlayerCall(this.MediaPlayer.Stop);
         }
 
         /// <summary>
@@ -297,7 +310,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         {
             get
             {
-                return this.SafePlayerCall(() => this.mediaPlayer.Width, 0);
+                return this.SafePlayerCall(() => this.MediaPlayer.Width, 0);
             }
         }
 
@@ -308,7 +321,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         {
             get
             {
-                return this.SafePlayerCall(() => this.mediaPlayer.Height, 0);
+                return this.SafePlayerCall(() => this.MediaPlayer.Height, 0);
             }
         }
 
@@ -325,8 +338,9 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// </summary>
         internal void Exit()
         {
-            this.SafePlayerCall(() => this.mediaPlayer.Stop(), updateStatusOnError: false);
-            this.mediaPlayer = null;
+            Trace.WriteLine("Exit Called.");
+            this.SafePlayerCall(() => this.MediaPlayer.Stop(), updateStatusOnError: false);
+            this.MediaPlayer = null;
         }
 
         /// <summary>
@@ -356,7 +370,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// </exception>
         private bool Initialize(string uri)
         {
-            if (this.mediaPlayer == null)
+            if (this.MediaPlayer == null)
             {
                 throw new Exception("SetupPlayerObject must be called before initialize.");
             }
@@ -365,7 +379,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
             //((IMouseAware)this.mediaPlayer).MouseEnter += this.OnMouseEnter;
             //((IMouseAware)this.mediaPlayer).MouseLeave += this.OnMouseLeave;
 
-            return this.SafePlayerCall(() => this.mediaPlayer.Initialize(uri), false, true);
+            return this.SafePlayerCall(() => this.MediaPlayer.Initialize(uri), false, true);
         }
 
         /// <summary>
@@ -375,12 +389,13 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// <param name="updateStreamingStatus">Whether to update the StreamingStatus to Disconnected.</param>
         private void HandlePlayerError(bool signalExit = false, bool updateStreamingStatus = true)
         {
+            Trace.WriteLine("Handle Player Error");
             if (updateStreamingStatus)
             {
                 this.OnStreamingStatusChanged(ConnectionStatus.Disconnected, string.Empty);
             }
 
-            this.mediaPlayer = null;
+            this.MediaPlayer = null;
 
             if (signalExit)
             {
@@ -437,10 +452,10 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         {
             Trace.WriteLine("Called SetupPlayerObjectImpl(string uri)");
             Trace.WriteLine(uri);
-            
-            this.mediaPlayer = new MediaPlayer();
-            Trace.WriteLine(this.mediaPlayer);
-            var hostedControl = this.mediaPlayer.SetupPlayerObject();
+
+            this.MediaPlayer = new MediaPlayer();
+            Trace.WriteLine(this.MediaPlayer);
+            var hostedControl = this.MediaPlayer.SetupPlayerObject();
 
             if (!this.Initialize(uri))
             {
@@ -544,7 +559,9 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
             }
             catch (Exception ex)
             {
-                Log("Unexpected error during SafePlayerCall: " + action.Method.Name + "\r\n\r\nError: " + ex, EventLogEntryType.Error);
+                Trace.WriteLine(ex.Message);
+                Trace.WriteLine(ex.StackTrace);
+                Trace.WriteLine("Unexpected error during SafePlayerCall: " + action.Method.Name + "\r\n\r\nError: " + ex);
             }
 
             this.HandlePlayerError(signalExitOnError, updateStatusOnError);

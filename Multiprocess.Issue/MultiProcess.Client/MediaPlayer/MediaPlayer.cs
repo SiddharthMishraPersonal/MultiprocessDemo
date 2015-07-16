@@ -21,6 +21,8 @@ namespace MultiProcess.Client.MediaPlayer
         /// </summary>
         private WindowsFormsHost _playerWinFormHost;
 
+        private string videoUri;
+
 
         public VlcControl VlcControl
         {
@@ -52,11 +54,7 @@ namespace MultiProcess.Client.MediaPlayer
                 return;
 
             e.VlcLibDirectory = AssemblyName.GetAssemblyName(currentAssembly.Location).ProcessorArchitecture
-                                == ProcessorArchitecture.X86 ? new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\..\lib\WPF\x86")) : new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\..\lib\WPF\x64"));
-
-            //var directoryInfo = new DirectoryInfo(@"C:\Users\WKTF64\Documents\GitHub\MultiprocessDemoIssue\Multiprocess.Issue\lib\WinForms\x86");
-            //Trace.WriteLine(directoryInfo.Exists);
-            //Trace.WriteLine(e.VlcLibDirectory);   
+                                == ProcessorArchitecture.X86 ? new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\lib\WPF\x86")) : new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\lib\WPF\x64"));
         }
 
         void ucVLCMediaPlayerControl_Unloaded(object sender, RoutedEventArgs e)
@@ -74,14 +72,14 @@ namespace MultiProcess.Client.MediaPlayer
             {
                 Child = this.VlcControl.MediaPlayer
             };
-            this.VlcControl.MediaPlayer.Play();
 
             return this._playerWinFormHost;
         }
 
         public bool Play()
         {
-            this.VlcControl.MediaPlayer.Play();
+            var uri = new Uri(string.IsNullOrEmpty(this.videoUri) ? @"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4" : this.videoUri);
+            this.VlcControl.MediaPlayer.Play(uri);
             return true;
         }
 
@@ -118,7 +116,8 @@ namespace MultiProcess.Client.MediaPlayer
 
         public bool Initialize(string uri)
         {
-            throw new NotImplementedException();
+            this.videoUri = uri;
+            return true;
         }
 
         public event EventHandler<StreamingStaticsEventArgs> StreamingStatisticsUpdated;

@@ -6,6 +6,8 @@ using System.Text;
 namespace Multiprocess.Issue.DemoAppViewModels
 {
     using System.Collections.ObjectModel;
+    using System.IO;
+    using System.Reflection;
     using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
@@ -18,6 +20,8 @@ namespace Multiprocess.Issue.DemoAppViewModels
     using MultiProcess.MediaPlayerHelper;
 
     using Telerik.Windows.Controls;
+
+    using Vlc.DotNet.Wpf;
 
     public class ApplicationViewModel : ViewModelBase
     {
@@ -181,12 +185,33 @@ namespace Multiprocess.Issue.DemoAppViewModels
         private void StartVlcVideos(object o)
         {
             this.Player.Play();
+
+            //var contentControl = this.View.FindName("ContentControl00") as ContentControl;
+
+
+            //var control = new VlcControl();
+            //control.MediaPlayer.VlcLibDirectoryNeeded += MediaPlayer_VlcLibDirectoryNeeded;
+
+            //var uri = new Uri(@"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4");
+            //control.MediaPlayer.Play(uri);
+        }
+
+        void MediaPlayer_VlcLibDirectoryNeeded(object sender, Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs e)
+        {
+            var currentAssembly = Assembly.GetEntryAssembly();
+            var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
+
+            if (currentDirectory == null)
+                return;
+
+            e.VlcLibDirectory = AssemblyName.GetAssemblyName(currentAssembly.Location).ProcessorArchitecture
+                                == ProcessorArchitecture.X86 ? new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\lib\WPF\x86")) : new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\lib\WPF\x64"));
         }
 
         private void SetupCommandHanlder(object o)
         {
-            var mainGrid = this.View.FindName("ContentControl00") as ContentControl;
-            PlayVideoExpernally(mainGrid);
+            var contentControl = this.View.FindName("ContentControl00") as ContentControl;
+            PlayVideoExpernally(contentControl);
         }
 
         /// <summary>
@@ -242,7 +267,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
 
                     this.Player.Initialize(
                         "http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4");
-                    
+
                     this.Media = this.Player.SetupPlayerObject();
 
                     if (this.Media != null)
