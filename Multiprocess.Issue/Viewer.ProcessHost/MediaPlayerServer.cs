@@ -450,10 +450,12 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// </returns>
         private IntPtr SetupPlayerObjectImpl(string uri)
         {
+            //Debugger.Launch();
             Trace.WriteLine("Called SetupPlayerObjectImpl(string uri)");
             Trace.WriteLine(uri);
 
             this.MediaPlayer = new MediaPlayer();
+            this.MediaPlayer.StreamingStatusChanged += MediaPlayer_StreamingStatusChanged;
             Trace.WriteLine(this.MediaPlayer);
             var hostedControl = this.MediaPlayer.SetupPlayerObject();
 
@@ -462,12 +464,30 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
                 return IntPtr.Zero;
             }
 
-            this.HostForm.Content = hostedControl;
-            this.HostForm.Show();
-            var windowHelper = new WindowInteropHelper(this.HostForm);
+            WindowInteropHelper windowHelper = null;
+
+            if (this.HostForm != null)
+            {
+
+                this.HostForm.Content = hostedControl;
+                (this.HostForm as ProcessHostForm).Show();
+                //var processHostForm = this.HostForm as ProcessHostForm;
+                //if (processHostForm != null)
+                //{
+                //    processHostForm.ShowWindow();
+                //}
+                windowHelper = new WindowInteropHelper(this.HostForm);
+            }
 
             Trace.WriteLine("Media is playing.");
+            Trace.WriteLine(windowHelper);
+            Trace.WriteLine(windowHelper.Handle);
             return windowHelper.Handle;
+        }
+
+        void MediaPlayer_StreamingStatusChanged(ConnectionStatus status, string errorCode)
+        {
+            this.OnStreamingStatusChanged(status, errorCode);
         }
 
 

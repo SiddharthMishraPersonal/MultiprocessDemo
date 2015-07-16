@@ -10,6 +10,7 @@ namespace MultiProcess.Client.MediaPlayer
     using System.IO;
     using System.Reflection;
     using System.Windows;
+    using System.Windows.Controls;
     using System.Windows.Forms.Integration;
 
     using Vlc.DotNet.Wpf;
@@ -36,6 +37,7 @@ namespace MultiProcess.Client.MediaPlayer
             {
                 var control = new VlcControl();
                 control.MediaPlayer.VlcLibDirectoryNeeded += MediaPlayer_VlcLibDirectoryNeeded;
+                control.MediaPlayer.Playing += MediaPlayer_Playing;
                 this.VlcControl = control;
             }
             catch (Exception)
@@ -43,6 +45,11 @@ namespace MultiProcess.Client.MediaPlayer
 
                 throw;
             }
+        }
+
+        void MediaPlayer_Playing(object sender, Vlc.DotNet.Core.VlcMediaPlayerPlayingEventArgs e)
+        {
+            StreamingStatusChanged(ConnectionStatus.Streaming, "");
         }
 
         void MediaPlayer_VlcLibDirectoryNeeded(object sender, Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs e)
@@ -66,14 +73,17 @@ namespace MultiProcess.Client.MediaPlayer
         }
 
 
-        public System.Windows.UIElement SetupPlayerObject()
+        public UIElement SetupPlayerObject()
         {
+            DockPanel dockPanel = new DockPanel(); 
             _playerWinFormHost = new WindowsFormsHost
             {
                 Child = this.VlcControl.MediaPlayer
             };
 
-            return this._playerWinFormHost;
+            dockPanel.Children.Add(_playerWinFormHost);
+
+            return dockPanel;
         }
 
         public bool Play()
@@ -81,6 +91,23 @@ namespace MultiProcess.Client.MediaPlayer
             var uri = new Uri(string.IsNullOrEmpty(this.videoUri) ? @"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4" : this.videoUri);
             this.VlcControl.MediaPlayer.Play(uri);
             return true;
+        }
+
+        /// <summary>
+        /// The _player object_ streaming status changed.
+        /// </summary>
+        /// <param name="status">
+        /// The status.
+        /// </param>
+        /// <param name="errorCode">
+        /// The errorCode.
+        /// </param>
+        private void PlayerObjectStreamingStatusChanged(ConnectionStatus status, string errorCode)
+        {
+            if (StreamingStatusChanged != null)
+            {
+                StreamingStatusChanged(status, errorCode);
+            }
         }
 
         public bool Play(DateTime startTime, DateTime endTime)

@@ -6,6 +6,7 @@ using System.Text;
 namespace Multiprocess.Issue.DemoAppViewModels
 {
     using System.Collections.ObjectModel;
+    using System.Diagnostics;
     using System.IO;
     using System.Reflection;
     using System.Threading;
@@ -142,28 +143,28 @@ namespace Multiprocess.Issue.DemoAppViewModels
             this.View.DataContext = this;
             var mainGrid = this.View.FindName("MainGrid") as Grid;
 
-            if (mainGrid != null)
-            {
-                for (int i = 0; i < 16; i++)
-                {
-                    var uriObject = new Uri(this.uriList[i]);
-                    var vlcControl = new VLCMediaPlayerViewModel(new ucVLCMediaPlayerControl(), uriObject);
-                    this.vlcMediaPlayerViewModels.Add(vlcControl);
-                }
-                var row = 0;
-                var column = 0;
-                foreach (var vlcMediaPlayerViewModel in vlcMediaPlayerViewModels)
-                {
-                    mainGrid.Children.Add(vlcMediaPlayerViewModel.View);
-                    Grid.SetRow(vlcMediaPlayerViewModel.View, row);
-                    Grid.SetColumn(vlcMediaPlayerViewModel.View, column++);
-                    if (column == 4)
-                    {
-                        row++;
-                        column = 0;
-                    }
-                }
-            }
+            //if (mainGrid != null)
+            //{
+            //    for (int i = 0; i < 16; i++)
+            //    {
+            //        var uriObject = new Uri(this.uriList[i]);
+            //        var vlcControl = new VLCMediaPlayerViewModel(new ucVLCMediaPlayerControl(), uriObject);
+            //        this.vlcMediaPlayerViewModels.Add(vlcControl);
+            //    }
+            //    var row = 0;
+            //    var column = 0;
+            //    foreach (var vlcMediaPlayerViewModel in vlcMediaPlayerViewModels)
+            //    {
+            //        mainGrid.Children.Add(vlcMediaPlayerViewModel.View);
+            //        Grid.SetRow(vlcMediaPlayerViewModel.View, row);
+            //        Grid.SetColumn(vlcMediaPlayerViewModel.View, column++);
+            //        if (column == 4)
+            //        {
+            //            row++;
+            //            column = 0;
+            //        }
+            //    }
+            //}
 
             this.StartVideoCommand = new DelegateCommand(this.StartVlcVideos);
             this.StopVideoCommand = new DelegateCommand(this.StopVlcVideos);
@@ -185,32 +186,30 @@ namespace Multiprocess.Issue.DemoAppViewModels
         private void StartVlcVideos(object o)
         {
             this.Player.Play();
-
-            //var contentControl = this.View.FindName("ContentControl00") as ContentControl;
-
-
-            //var control = new VlcControl();
-            //control.MediaPlayer.VlcLibDirectoryNeeded += MediaPlayer_VlcLibDirectoryNeeded;
-
-            //var uri = new Uri(@"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4");
-            //control.MediaPlayer.Play(uri);
         }
 
-        void MediaPlayer_VlcLibDirectoryNeeded(object sender, Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs e)
-        {
-            var currentAssembly = Assembly.GetEntryAssembly();
-            var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
+        private int count = 0;
 
-            if (currentDirectory == null)
-                return;
-
-            e.VlcLibDirectory = AssemblyName.GetAssemblyName(currentAssembly.Location).ProcessorArchitecture
-                                == ProcessorArchitecture.X86 ? new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\lib\WPF\x86")) : new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\lib\WPF\x64"));
-        }
+        private RadBusyIndicator busyIndicator;
 
         private void SetupCommandHanlder(object o)
         {
-            var contentControl = this.View.FindName("ContentControl00") as ContentControl;
+            if (count >= 15)
+                return;
+
+            var ucContentControl = new ucContentControlMedia();
+            var contentControl = ucContentControl.FindName("ContentControl") as ContentControl;
+            this.busyIndicator = ucContentControl.FindName("BusyIndicator") as RadBusyIndicator;
+            if (this.busyIndicator != null)
+            {
+                this.busyIndicator.IsBusy = true;
+            }
+
+            var mainGrid = this.View.FindName("MainGrid") as Grid;
+            mainGrid.Children.Add(ucContentControl);
+            Grid.SetRow(ucContentControl, count / 4);
+            Grid.SetColumn(ucContentControl, count % 4);
+            count++;
             PlayVideoExpernally(contentControl);
         }
 
@@ -253,37 +252,69 @@ namespace Multiprocess.Issue.DemoAppViewModels
         /// <summary>
         /// The dispatcher service used to call to the UI thread and analyze performance
         /// </summary>
-        //private readonly IDispatcherService dispatcherService = new DispatcherService();
-
         private void PlayVideoExpernally(ContentControl host)
         {
             this.mediaPlayerProxyFactory = new MediaPlayerProxyFactory();
             var workerThread = new Thread(
                 () =>
                 {
-                    var mediaUri = this.vlcMediaPlayerViewModels[0].VideoUri;
-                    this.Player = this.mediaPlayerProxyFactory.GetPlayerInstance(mediaUri, externalProcessId);
-                    this.externalProcessId = 0;
+                    var isHostUnInitialized = true;
+                    // need to access these properties from UI thread
+                    Application.Current.Dispatcher.Invoke(
+                        () =>
+                        {
+                            isHostUnInitialized = host.Content == null;
+                        });
 
-                    this.Player.Initialize(
-                        "http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4");
-
-                    this.Media = this.Player.SetupPlayerObject();
-
-                    if (this.Media != null)
+                    if (isHostUnInitialized)
                     {
-                        Application.Current.Dispatcher.Invoke(
-                            () =>
-                            {
-                                if (host != null)
+                        var mediaUri =
+                            new Uri(
+                                @"http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4");
+                        this.Player = this.mediaPlayerProxyFactory.GetPlayerInstance(mediaUri, externalProcessId);
+                        this.externalProcessId = 0;
+
+                        if (this.Player != null)
+                        {
+                            this.Player.Initialize(mediaUri.AbsoluteUri);
+
+                            this.Media = this.Player.SetupPlayerObject();
+                        }
+
+                        if (this.Media != null)
+                        {
+                            Application.Current.Dispatcher.Invoke(
+                                () =>
                                 {
-                                    host.Content = this.Media;
-                                }
-                            });
+                                    if (host != null)
+                                    {
+                                        host.Content = this.Media;
+                                    }
+                                });
+                        }
+
+                        if (this.Player != null)
+                        {
+                            this.Player.StreamingStatusChanged += this.PlayerStreamingStatusChanged;
+                            this.Player.Play();
+
+                        }
                     }
                 });
 
             workerThread.Start();
+        }
+
+        private void PlayerStreamingStatusChanged(ConnectionStatus status, string errorCode)
+        {
+            if (status.Equals(ConnectionStatus.Streaming))
+            {
+                Application.Current.Dispatcher.Invoke(
+                    () =>
+                        {
+                            busyIndicator.IsBusy = false;
+                        });
+            }
         }
     }
 }

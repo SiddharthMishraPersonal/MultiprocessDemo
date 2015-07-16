@@ -3,7 +3,7 @@
         xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
         x:Class="Multiprocess.Issue.DemoApp.MainWindow" 
         xmlns:userControls ="clr-namespace:Multiprocess.Issue.DemoApp.UserControls"
-        Title="MainWindow" Height="500" Width="500">
+        Title="MainWindow" Height="800" Width="900">
     <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
@@ -18,23 +18,197 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <ContentControl Grid.Row="0" 
-                        x:Name="ContentControl00"
-                        Grid.Column="0"
+        <Border BorderBrush="Black"
+                Grid.Row="0"
+                Grid.Column="0" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+        <ContentControl x:Name="ContentControl0"
                         HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"></ContentControl>
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="0"
+                Grid.Column="1" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl1"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="0"
+                Grid.Column="2" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl2"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="0"
+                Grid.Column="3" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl3"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+
+        <Border BorderBrush="Black"
+                Grid.Row="1"
+                Grid.Column="0" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl4"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="1"
+                Grid.Column="1" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl5"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="1"
+                Grid.Column="2" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl6"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="1"
+                Grid.Column="3" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl7"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="2"
+                Grid.Column="0" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl8"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="2"
+                Grid.Column="1" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl9"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="2"
+                Grid.Column="2" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl10"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="2"
+                Grid.Column="3" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl11"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="3"
+                Grid.Column="0" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl12"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="3"
+                Grid.Column="1" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl13"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="3"
+                Grid.Column="2" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl14"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+        <Border BorderBrush="Black"
+                Grid.Row="3"
+                Grid.Column="3" 
+                BorderThickness="2"
+                CornerRadius="5"
+                Margin="5"
+                >
+            <ContentControl x:Name="ContentControl15"
+                        HorizontalAlignment="Stretch" 
+                        VerticalAlignment="Stretch"/>
+        </Border>
+
         <StackPanel Grid.Row="4" 
                 Grid.Column="0" 
+                    HorizontalAlignment="Center"
                     Orientation="Horizontal"
                 Grid.ColumnSpan="4" >
             <Button 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
-                Content="Setup" 
+                Content="Add New Video" 
                 Margin="10" 
                 Command="{Binding SetupCommand}"
                 MinWidth="100"></Button>
-            <Button 
+            <!--<Button 
                 HorizontalAlignment="Center" 
                 VerticalAlignment="Center" 
                 Content="Play All" 
@@ -47,7 +221,7 @@
                 Content="Stop All" 
                 Margin="10" 
                 Command="{Binding StopVideoCommand}"
-                MinWidth="100"></Button>
+                MinWidth="100"></Button>-->
         </StackPanel>
     </Grid>
 </Window>
