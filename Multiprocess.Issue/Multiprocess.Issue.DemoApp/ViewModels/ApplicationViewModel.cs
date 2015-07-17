@@ -378,11 +378,15 @@ namespace Multiprocess.Issue.DemoAppViewModels
 
         private void PlayerStreamingStatusChanged(ConnectionStatus status, string errorCode)
         {
-            Application.Current.Dispatcher.Invoke(
-                () =>
-                {
-                    this.IsBusy = !status.Equals(ConnectionStatus.Streaming);
-                });
+            if (Application.Current != null)
+            {
+
+                Application.Current.Dispatcher.Invoke(
+                    () =>
+                    {
+                        this.IsBusy = !status.Equals(ConnectionStatus.Streaming);
+                    });
+            }
 
         }
 
