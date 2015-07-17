@@ -32,12 +32,21 @@ namespace Multiprocess.Issue.DemoApp
         public App()
         {
             this.Startup += this.AppStartup;
-            this.Exit += App_Exit;
+            this.Exit += this.AppExit;
         }
 
-        void App_Exit(object sender, ExitEventArgs e)
+        /// <summary>
+        /// The app exit.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void AppExit(object sender, ExitEventArgs e)
         {
-            appViewModel.Dispose();
+            this.appViewModel.Dispose();
         }
 
         /// <summary>
