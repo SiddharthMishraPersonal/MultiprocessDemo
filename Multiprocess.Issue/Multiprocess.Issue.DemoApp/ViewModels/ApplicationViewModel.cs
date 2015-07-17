@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ApplicationViewModel.cs" company="">
+//   
+// </copyright>
+// <summary>
+//   The application view model.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-namespace Multiprocess.Issue.DemoAppViewModels
+namespace Multiprocess.Issue.DemoApp.ViewModels
 {
+    using System;
+    using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Diagnostics;
-    using System.IO;
-    using System.Reflection;
     using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
@@ -22,16 +26,12 @@ namespace Multiprocess.Issue.DemoAppViewModels
 
     using Telerik.Windows.Controls;
 
-    using Vlc.DotNet.Wpf;
-
+    /// <summary>
+    /// The application view model.
+    /// </summary>
     public class ApplicationViewModel : ViewModelBase
     {
         #region Private member variables
-
-        /// <summary>
-        /// The vlc media player view models.
-        /// </summary>
-        private ObservableCollection<VLCMediaPlayerViewModel> vlcMediaPlayerViewModels = new ObservableCollection<VLCMediaPlayerViewModel>();
 
         private List<string> uriList = new List<string>(16);
 
@@ -200,7 +200,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
 
         private void SetupCommandHanlder(object o)
         {
-            if (count >= 15)
+            if (this.count >= 15)
                 return;
 
             var ucContentControl = new ucContentControlMedia();
@@ -210,10 +210,10 @@ namespace Multiprocess.Issue.DemoAppViewModels
 
             var mainGrid = this.View.FindName("MainGrid") as Grid;
             mainGrid.Children.Add(ucContentControl);
-            Grid.SetRow(ucContentControl, count / 4);
-            Grid.SetColumn(ucContentControl, count % 4);
-            count++;
-            PlayVideoExpernally(contentControl);
+            Grid.SetRow(ucContentControl, this.count / 4);
+            Grid.SetColumn(ucContentControl, this.count % 4);
+            this.count++;
+            this.PlayVideoExpernally(contentControl);
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
             set
             {
                 this.setupCommand = value;
-                OnPropertyChanged("SetupCommand");
+                this.OnPropertyChanged("SetupCommand");
             }
         }
 
@@ -261,7 +261,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
             set
             {
                 this.uiMode = value;
-                OnPropertyChanged("UiMode");
+                this.OnPropertyChanged("UiMode");
             }
         }
 
@@ -274,7 +274,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
             set
             {
                 this.mulitProcessMode = value;
-                OnPropertyChanged("MulitProcessMode");
+                this.OnPropertyChanged("MulitProcessMode");
             }
         }
 
@@ -287,7 +287,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
             set
             {
                 this.isBusy = value;
-                OnPropertyChanged("IsBusy");
+                this.OnPropertyChanged("IsBusy");
 
                 if (this.busyIndicator != null)
                 {
@@ -315,7 +315,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
 
                     if (isHostUnInitialized)
                     {
-                        var videoUrl = string.Format(@"C:\Video\4KVideo0{0}.mp4", count);
+                        var videoUrl = string.Format(@"C:\Video\4KVideo0{0}.mp4", this.count);
                         Trace.WriteLine(videoUrl);
                         var mediaUri =
                             new Uri(videoUrl);
@@ -331,7 +331,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
                           }
                       });
 
-                        this.Player = this.mediaPlayerProxyFactory.GetPlayerInstance(mediaUri, externalProcessId);
+                        this.Player = this.mediaPlayerProxyFactory.GetPlayerInstance(mediaUri, this.externalProcessId);
 
 
                         this.externalProcessId = 0;
@@ -358,7 +358,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
                         if (this.Player != null)
                         {
                             this.Player.StreamingStatusChanged += this.PlayerStreamingStatusChanged;
-                            this.Player.PlayerError += Player_PlayerError;
+                            this.Player.PlayerError += this.Player_PlayerError;
                             this.Player.Play();
 
                         }

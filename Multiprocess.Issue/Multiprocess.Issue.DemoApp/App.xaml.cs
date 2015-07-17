@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace Multiprocess.Issue.DemoApp
 {
-    using Multiprocess.Issue.DemoAppViewModels;
+    using Multiprocess.Issue.DemoApp.ViewModels;
 
     using Telerik.Windows.Controls;
 
