@@ -75,9 +75,7 @@
     <Compile Include="StreamingStatistics.cs" />
     <Compile Include="Volume.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Event\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>

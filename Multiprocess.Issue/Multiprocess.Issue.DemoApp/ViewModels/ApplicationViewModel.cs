@@ -212,7 +212,7 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
             mainGrid.Children.Add(ucContentControl);
             Grid.SetRow(ucContentControl, this.count / 4);
             Grid.SetColumn(ucContentControl, this.count % 4);
-            this.count++;
+        
             this.PlayVideoExpernally(contentControl);
         }
 
@@ -315,7 +315,7 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
 
                     if (isHostUnInitialized)
                     {
-                        var videoUrl = string.Format(@"C:\Video\4KVideo0{0}.mp4", this.count);
+                        var videoUrl = string.Format(@"C:\Video\4KVideo0{0}.mp4", this.count++);
                         Trace.WriteLine(videoUrl);
                         var mediaUri =
                             new Uri(videoUrl);
