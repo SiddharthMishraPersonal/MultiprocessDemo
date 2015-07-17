@@ -9,10 +9,11 @@ namespace MultiProcess.MediaPlayerHelper
     using System.IO;
 
     using MultiProcess.Client;
+    using MultiProcess.MediaPlayerHelper.HostedContents;
 
     using Telerik.Windows.Controls;
 
-    public class MediaPlayerProxyFactory : IMediaPlayerProxyFactory
+    public class MediaPlayerProxyFactory : IMediaPlayerProxyFactory, IDisposable
     {
 
         /// <summary>
@@ -139,14 +140,24 @@ namespace MultiProcess.MediaPlayerHelper
                 {
                     process.EnableRaisingEvents = true;
                 }
-
             }
             catch (Exception exception)
             {
-                
+
                 throw;
             }
             return process;
+        }      
+
+        public void Dispose()
+        {
+            foreach (KeyValuePair<string, Process> keyValuePair in hostedProcessCollection)
+            {
+                if (keyValuePair.Value != null)
+                {
+                    keyValuePair.Value.Kill();
+                }
+            }
         }
     }
 }

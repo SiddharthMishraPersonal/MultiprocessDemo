@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace MultiProcess.MediaPlayerHelper
 {
+    using System.Security.Cryptography.X509Certificates;
+
     using MultiProcess.Client;
 
     public interface IMediaPlayerProxyFactory
@@ -20,5 +22,7 @@ namespace MultiProcess.MediaPlayerHelper
         /// </param>
         /// <returns>The <see cref="IMediaPlayer"/> containing the desired stream.</returns>
         IMediaPlayer GetPlayerInstance(Uri channelUri, int externalProcessId = 0);
+
+        void Dispose();
     }
 }

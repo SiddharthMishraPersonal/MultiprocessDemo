@@ -1,204 +1,221 @@
-﻿<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
-        x:Class="Multiprocess.Issue.DemoApp.MainWindow" 
-        xmlns:userControls ="clr-namespace:Multiprocess.Issue.DemoApp.UserControls"
-        Title="MainWindow" Height="800" Width="900">
-    <Grid x:Name="MainGrid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+﻿<Window
+    x:Class="Multiprocess.Issue.DemoApp.MainWindow"
+    Title="MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+    xmlns:userControls="clr-namespace:Multiprocess.Issue.DemoApp.UserControls"
+    Height="800"
+    Width="900">
+    <Window.Resources>
+        <telerik:BooleanConverter x:Key="BooleanConverter" />
+        <telerik:InvertedBooleanConverter x:Key="InvertedBooleanConverter" />
+    </Window.Resources>
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Border BorderBrush="Black"
-                Grid.Row="0"
-                Grid.Column="0" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-            <ContentControl x:Name="ContentControl0"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="0"
-                Grid.Column="1" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="0"
-                Grid.Column="2" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="0"
-                Grid.Column="3" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-
-        </Border>
-
-        <Border BorderBrush="Black"
-                Grid.Row="1"
-                Grid.Column="0" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-            <ContentControl x:Name="ContentControl4"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="1"
-                Grid.Column="1" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="1"
-                Grid.Column="2" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-            <ContentControl x:Name="ContentControl6"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="1"
-                Grid.Column="3" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="2"
-                Grid.Column="0" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-            <ContentControl x:Name="ContentControl8"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="2"
-                Grid.Column="1" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="2"
-                Grid.Column="2" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="2"
-                Grid.Column="3" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-            <ContentControl x:Name="ContentControl11"
-                        HorizontalAlignment="Stretch" 
-                        VerticalAlignment="Stretch"/>
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="3"
-                Grid.Column="0" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="3"
-                Grid.Column="1" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="3"
-                Grid.Column="2" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-
-        </Border>
-        <Border BorderBrush="Black"
-                Grid.Row="3"
-                Grid.Column="3" 
-                BorderThickness="2"
-                CornerRadius="1"
-                Margin="3"
-                >
-
-        </Border>
-
-        <StackPanel Grid.Row="4" 
-                Grid.Column="0" 
-                    HorizontalAlignment="Center"
-                    Orientation="Horizontal"
-                Grid.ColumnSpan="4" >
-            <Button 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                Content="Add New Video" 
-                Margin="10" 
+        <!--
+            <GroupBox
+            Grid.Row="0"
+            Header="Select Modes and Add Video">
+            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical">
+            <RadioButton
+            Content="MultiProcess Mode"
+            IsChecked="True" />
+            <RadioButton Content="UI Thread Host Mode" />
+            </StackPanel>
+            </StackPanel>
+            </GroupBox>
+        -->
+        <StackPanel
+            Grid.Row="0"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Stretch"
+            Orientation="Horizontal">
+            <Button
+                MinWidth="100"
+                Margin="10"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
                 Command="{Binding SetupCommand}"
-                MinWidth="100"></Button>
-            <!--<Button 
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                Content="Play All" 
-                Margin="10" 
+                Content="Add New Video"
+                IsEnabled="{Binding
+                    IsBusy,
+                    Converter={StaticResource InvertedBooleanConverter}}" />
+            <!--
+                <Button
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Play All"
+                Margin="10"
                 Command="{Binding StartVideoCommand}"
                 MinWidth="100"></Button>
-            <Button  
-                HorizontalAlignment="Center" 
-                VerticalAlignment="Center" 
-                Content="Stop All" 
-                Margin="10" 
+                <Button
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="Stop All"
+                Margin="10"
                 Command="{Binding StopVideoCommand}"
-                MinWidth="100"></Button>-->
+                MinWidth="100"></Button>
+            -->
         </StackPanel>
+        <Grid
+            x:Name="MainGrid"
+            Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Border
+                Grid.Column="0"
+                Grid.Row="0"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1">
+                <ContentControl
+                    x:Name="ContentControl0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" />
+            </Border>
+            <Border
+                Grid.Column="1"
+                Grid.Row="0"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+            <Border
+                Grid.Column="2"
+                Grid.Row="0"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+            <Border
+                Grid.Column="3"
+                Grid.Row="0"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+
+            <Border
+                Grid.Column="0"
+                Grid.Row="1"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1">
+                <ContentControl
+                    x:Name="ContentControl4"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" />
+            </Border>
+            <Border
+                Grid.Column="1"
+                Grid.Row="1"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+            <Border
+                Grid.Column="2"
+                Grid.Row="1"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1">
+                <ContentControl
+                    x:Name="ContentControl6"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" />
+            </Border>
+            <Border
+                Grid.Column="3"
+                Grid.Row="1"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+            <Border
+                Grid.Column="0"
+                Grid.Row="2"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1">
+                <ContentControl
+                    x:Name="ContentControl8"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" />
+            </Border>
+            <Border
+                Grid.Column="1"
+                Grid.Row="2"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+            <Border
+                Grid.Column="2"
+                Grid.Row="2"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+            <Border
+                Grid.Column="3"
+                Grid.Row="2"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1">
+                <ContentControl
+                    x:Name="ContentControl11"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" />
+            </Border>
+            <Border
+                Grid.Column="0"
+                Grid.Row="3"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+            <Border
+                Grid.Column="1"
+                Grid.Row="3"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+            <Border
+                Grid.Column="2"
+                Grid.Row="3"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+            <Border
+                Grid.Column="3"
+                Grid.Row="3"
+                Margin="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                CornerRadius="1" />
+
+        </Grid>
     </Grid>
 </Window>

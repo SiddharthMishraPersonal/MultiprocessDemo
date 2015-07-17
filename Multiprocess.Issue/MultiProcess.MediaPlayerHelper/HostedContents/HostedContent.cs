@@ -163,6 +163,12 @@ namespace MultiProcess.MediaPlayerHelper.HostedContents
             }
         }
 
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        /// <param name="disposing">
+        /// The disposing.
+        /// </param>
         protected override void Dispose(bool disposing)
         {
             if (disposing)

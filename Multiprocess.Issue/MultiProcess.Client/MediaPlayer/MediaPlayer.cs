@@ -13,6 +13,8 @@ namespace MultiProcess.Client.MediaPlayer
     using System.Windows.Controls;
     using System.Windows.Forms.Integration;
 
+    using MultiProcess.Client.EventArg;
+
     using Vlc.DotNet.Wpf;
 
     public class MediaPlayer : IMediaPlayer
@@ -40,11 +42,12 @@ namespace MultiProcess.Client.MediaPlayer
                 control.MediaPlayer.Playing += MediaPlayer_Playing;
                 control.MediaPlayer.EncounteredError += MediaPlayer_EncounteredError;
                 control.MediaPlayer.Opening += MediaPlayer_Opening;
+                control.Unloaded += this.ucVLCMediaPlayerControl_Unloaded;
                 this.VlcControl = control;
             }
             catch (Exception)
             {
-
+                this.VlcControl.MediaPlayer.OnEncounteredError();
                 throw;
             }
         }
@@ -56,7 +59,7 @@ namespace MultiProcess.Client.MediaPlayer
 
         void MediaPlayer_EncounteredError(object sender, Vlc.DotNet.Core.VlcMediaPlayerEncounteredErrorEventArgs e)
         {
-            StreamingStatusChanged(ConnectionStatus.Interrupted, "VLC Media player encountered an error.");
+            PlayerError(sender, new PlayerErrorEventArgs(e.ToString(), "Error Occurred in VLC Media Player"));
         }
 
         void MediaPlayer_Playing(object sender, Vlc.DotNet.Core.VlcMediaPlayerPlayingEventArgs e)
@@ -192,7 +195,7 @@ namespace MultiProcess.Client.MediaPlayer
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            this.VlcControl.Dispose();
         }
     }
 }

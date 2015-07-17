@@ -35,6 +35,12 @@ namespace Multiprocess.Issue.DemoAppViewModels
 
         private List<string> uriList = new List<string>(16);
 
+        private bool mulitProcessMode;
+
+        private bool uiMode;
+
+        private bool isBusy;
+
         /// <summary>
         /// The view.
         /// </summary>
@@ -200,10 +206,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
             var ucContentControl = new ucContentControlMedia();
             var contentControl = ucContentControl.FindName("ContentControl") as ContentControl;
             this.busyIndicator = ucContentControl.FindName("BusyIndicator") as RadBusyIndicator;
-            if (this.busyIndicator != null)
-            {
-                this.busyIndicator.IsBusy = true;
-            }
+            this.IsBusy = true;
 
             var mainGrid = this.View.FindName("MainGrid") as Grid;
             mainGrid.Children.Add(ucContentControl);
@@ -246,6 +249,50 @@ namespace Multiprocess.Issue.DemoAppViewModels
             {
                 this.setupCommand = value;
                 OnPropertyChanged("SetupCommand");
+            }
+        }
+
+        public bool UiMode
+        {
+            get
+            {
+                return this.uiMode;
+            }
+            set
+            {
+                this.uiMode = value;
+                OnPropertyChanged("UiMode");
+            }
+        }
+
+        public bool MulitProcessMode
+        {
+            get
+            {
+                return this.mulitProcessMode;
+            }
+            set
+            {
+                this.mulitProcessMode = value;
+                OnPropertyChanged("MulitProcessMode");
+            }
+        }
+
+        public bool IsBusy
+        {
+            get
+            {
+                return this.isBusy;
+            }
+            set
+            {
+                this.isBusy = value;
+                OnPropertyChanged("IsBusy");
+
+                if (this.busyIndicator != null)
+                {
+                    this.busyIndicator.IsBusy = value;
+                }
             }
         }
 
@@ -311,6 +358,7 @@ namespace Multiprocess.Issue.DemoAppViewModels
                         if (this.Player != null)
                         {
                             this.Player.StreamingStatusChanged += this.PlayerStreamingStatusChanged;
+                            this.Player.PlayerError += Player_PlayerError;
                             this.Player.Play();
 
                         }
@@ -320,14 +368,28 @@ namespace Multiprocess.Issue.DemoAppViewModels
             workerThread.Start();
         }
 
+        void Player_PlayerError(object sender, MultiProcess.Client.EventArg.PlayerErrorEventArgs e)
+        {
+            Application.Current.Dispatcher.Invoke(
+            () =>
+            { MessageBox.Show(this.View, e.ErrorCode + "\n" + e.ErrorMessage, "Error"); });
+
+        }
+
         private void PlayerStreamingStatusChanged(ConnectionStatus status, string errorCode)
         {
             Application.Current.Dispatcher.Invoke(
                 () =>
                 {
-                    busyIndicator.IsBusy = !status.Equals(ConnectionStatus.Streaming);
+                    this.IsBusy = !status.Equals(ConnectionStatus.Streaming);
                 });
 
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            this.mediaPlayerProxyFactory.Dispose();
+            base.Dispose(disposing);
         }
     }
 }
