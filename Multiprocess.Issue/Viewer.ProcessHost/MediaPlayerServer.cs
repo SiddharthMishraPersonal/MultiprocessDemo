@@ -22,9 +22,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
     using MultiProcess.Client.MediaPlayer;
 
     using Viewer.ProcessHost.Communication;
-
-    using Vlc.DotNet.Wpf;
-
+    
     /// <summary>
     /// Class for interfacing between actual MediaPlayer and WCF client.
     /// </summary>
@@ -454,7 +452,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
             Trace.WriteLine("Called SetupPlayerObjectImpl(string uri)");
             Trace.WriteLine(uri);
 
-            this.MediaPlayer = new MediaPlayer();
+            this.MediaPlayer = new AxWindowMediaPlayer();
             this.MediaPlayer.StreamingStatusChanged += MediaPlayer_StreamingStatusChanged;
             Trace.WriteLine(this.MediaPlayer);
             var hostedControl = this.MediaPlayer.SetupPlayerObject();

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ApplicationViewModel.cs" company="">
-//   
+// <copyright file="ApplicationViewModel.cs" company="Motorola Solutions Inc">
+//   Demo purpose only.
 // </copyright>
 // <summary>
 //   The application view model.
@@ -315,7 +315,8 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
 
                     if (isHostUnInitialized)
                     {
-                        var videoUrl = string.Format(@"C:\Video\4KVideo0{0}.mp4", this.count++);
+                        var videoUrl = string.Format(@"C:\VideoHD\4KVideo0{0}.mp4", this.count++);
+                        videoUrl = @"http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov";
                         Trace.WriteLine(videoUrl);
                         var mediaUri =
                             new Uri(videoUrl);

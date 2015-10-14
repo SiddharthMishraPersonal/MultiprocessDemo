@@ -1,8 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Volume.cs" company="Motorola Solutions Inc">
+// For Demo purpose only.
+// </copyright>
+// <summary>
+//   The volume.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace MultiProcess.Client
 {

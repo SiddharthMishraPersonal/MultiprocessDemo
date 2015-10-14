@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Multiprocess.Issue.DemoApp"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiProcess.MediaPlayerHelper", "MultiProcess.MediaPlayerHelper\MultiProcess.MediaPlayerHelper.csproj", "{64B3A370-3394-4F71-BA19-D66DA5A347F5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WmpFormsLib", "WmpFormsLib\WmpFormsLib.csproj", "{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,18 @@ Global
 		{64B3A370-3394-4F71-BA19-D66DA5A347F5}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{64B3A370-3394-4F71-BA19-D66DA5A347F5}.Release|x64.ActiveCfg = Release|Any CPU
 		{64B3A370-3394-4F71-BA19-D66DA5A347F5}.Release|x86.ActiveCfg = Release|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Release|x64.ActiveCfg = Release|Any CPU
+		{067AFAC6-611E-4A2B-80B0-1EF874E45EBA}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -48,25 +48,10 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
-    <Reference Include="Vlc.DotNet.Core, Version=2.1.62.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Core.2.1.62\lib\net45\x86\Vlc.DotNet.Core.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Vlc.DotNet.Core.Interops, Version=2.1.62.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Core.Interops.2.1.62\lib\net45\x86\Vlc.DotNet.Core.Interops.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Vlc.DotNet.Forms, Version=2.1.62.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Forms.2.1.62\lib\net45\x86\Vlc.DotNet.Forms.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Vlc.DotNet.Wpf, Version=2.1.62.0, Culture=neutral, PublicKeyToken=84529da31f4eb963, processorArchitecture=x86">
-      <HintPath>..\packages\Vlc.DotNet.Wpf.2.1.62\lib\net45\x86\Vlc.DotNet.Wpf.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="App.xaml">
@@ -136,6 +121,10 @@
     <ProjectReference Include="..\Viewer.ProcessHost.Communication\Viewer.ProcessHost.Communication.csproj">
       <Project>{627f662f-d418-4f4e-845e-125a05af6a7e}</Project>
       <Name>Viewer.ProcessHost.Communication</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WmpFormsLib\WmpFormsLib.csproj">
+      <Project>{067afac6-611e-4a2b-80b0-1ef874e45eba}</Project>
+      <Name>WmpFormsLib</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

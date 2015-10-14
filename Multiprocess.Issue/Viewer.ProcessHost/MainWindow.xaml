@@ -1,16 +1,18 @@
-﻿<Window x:Class="Viewer.ProcessHost.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Wpf="clr-namespace:Vlc.DotNet.Wpf;assembly=Vlc.DotNet.Wpf" 
-        Title="MainWindowTest" Height="350" Width="525"
-        Visibility="Hidden"
-        ShowInTaskbar="False">
+﻿<Window
+    x:Class="Viewer.ProcessHost.MainWindow"
+    Title="MainWindowTest"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:wmp="clr-namespace:WmpFormsLib;assembly=WmpFormsLib"
+    Height="350"
+    Width="525"
+    ShowInTaskbar="False"
+    Visibility="Hidden">
     <Grid>
-        <Wpf:VlcControl Grid.Column="0" 
-                        Grid.Row="0"
-                        x:Name="VlcControl" 
-                        HorizontalAlignment="Stretch" 
-                        Margin="10" 
-                        VerticalAlignment="Stretch"  />
+        <WindowsFormsHost
+            Name="formsHost"
+            Panel.ZIndex="200">
+            <wmp:WmpControl x:Name="axWmp" />
+        </WindowsFormsHost>
     </Grid>
 </Window>
