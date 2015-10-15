@@ -130,10 +130,13 @@ namespace MultiProcess.Client.MediaPlayer
         /// <summary>
         /// The setup player object.
         /// </summary>
+        /// <param name="mediaType">
+        /// The media Type.
+        /// </param>
         /// <returns>
         /// The <see cref="UIElement"/>.
         /// </returns>
-        public UIElement SetupPlayerObject()
+        public UIElement SetupPlayerObject(MediaType mediaType)
         {
             this.playerWinFormHost = new WindowsFormsHost { Child = this.windowMediaPlayerControl };
             return this.playerWinFormHost;

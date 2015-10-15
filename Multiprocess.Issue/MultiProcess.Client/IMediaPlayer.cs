@@ -9,6 +9,19 @@ namespace MultiProcess.Client
 
     using MultiProcess.Client.EventArg;
 
+    public enum MediaType
+    {
+        /// <summary>
+        /// If we have VLC Player
+        /// </summary>
+        VlcPlayer = 1,
+
+        /// <summary>
+        /// If we have Window Media Player
+        /// </summary>
+        WindowMediaPlayer = 2
+    }
+
     /// <summary>
     /// The player speed.
     /// </summary>
@@ -54,10 +67,13 @@ namespace MultiProcess.Client
         /// <summary>
         /// Setup the player object
         /// </summary>
+        /// <param name="mediaType">
+        /// The media Type.
+        /// </param>
         /// <returns>
         /// Player UI element
         /// </returns>
-        UIElement SetupPlayerObject();
+        UIElement SetupPlayerObject(MediaType mediaType);
 
         /// <summary>
         /// Play live stream (MSTG only player)

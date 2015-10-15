@@ -10,20 +10,14 @@
 namespace Multiprocess.Issue.DemoApp.ViewModels
 {
     using System;
-    using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Diagnostics;
     using System.Threading;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-
     using MultiProcess.Client;
-
     using Multiprocess.Issue.DemoApp.UserControls;
-
     using MultiProcess.MediaPlayerHelper;
-
     using Telerik.Windows.Controls;
 
     /// <summary>
@@ -33,12 +27,34 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
     {
         #region Private member variables
 
-        private List<string> uriList = new List<string>(16);
+        /// <summary>
+        /// The is VLC player.
+        /// </summary>
+        private bool isVlcPlayer;
 
-        private bool mulitProcessMode;
+        /// <summary>
+        /// The video count.
+        /// </summary>
+        private int count = 0;
 
-        private bool uiMode;
+        /// <summary>
+        /// The external process id.
+        /// </summary>
+        private int externalProcessId = 0;
 
+        /// <summary>
+        /// The media player proxy factory.
+        /// </summary>
+        private IMediaPlayerProxyFactory mediaPlayerProxyFactory;
+
+        /// <summary>
+        /// The busy indicator.
+        /// </summary>
+        private RadBusyIndicator busyIndicator;
+
+        /// <summary>
+        /// The is busy.
+        /// </summary>
         private bool isBusy;
 
         /// <summary>
@@ -56,59 +72,10 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
         /// </summary>
         private ICommand stopVideoCommand;
 
+        /// <summary>
+        /// The setup command.
+        /// </summary>
         private ICommand setupCommand;
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the view.
-        /// </summary>
-        public Window View
-        {
-            get
-            {
-                return this.view;
-            }
-            set
-            {
-                this.view = value;
-                this.OnPropertyChanged("View");
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the start video command.
-        /// </summary>
-        public ICommand StartVideoCommand
-        {
-            get
-            {
-                return this.startVideoCommand;
-            }
-            set
-            {
-                this.startVideoCommand = value;
-                this.OnPropertyChanged("StartVideoCommand");
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the stop video command.
-        /// </summary>
-        public ICommand StopVideoCommand
-        {
-            get
-            {
-                return this.stopVideoCommand;
-            }
-            set
-            {
-                this.stopVideoCommand = value;
-                this.OnPropertyChanged("StopVideoCommand");
-            }
-        }
 
         #endregion
 
@@ -127,124 +94,89 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
                 return;
             }
 
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_320x180.mp4");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_stereo.avi");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_stereo.ogg");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_surround.avi");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_h264.mov");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.avi");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_stereo.ogg");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround-fix.avi");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_480p_surround.avi");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_h264.mov");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_stereo.avi");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_surround.avi");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_720p_stereo.ogg");
-            this.uriList.Add("http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov");
-
-
             this.View = view;
             this.View.DataContext = this;
-            var mainGrid = this.View.FindName("MainGrid") as Grid;
-
-            //if (mainGrid != null)
-            //{
-            //    for (int i = 0; i < 16; i++)
-            //    {
-            //        var uriObject = new Uri(this.uriList[i]);
-            //        var vlcControl = new VLCMediaPlayerViewModel(new ucVLCMediaPlayerControl(), uriObject);
-            //        this.vlcMediaPlayerViewModels.Add(vlcControl);
-            //    }
-            //    var row = 0;
-            //    var column = 0;
-            //    foreach (var vlcMediaPlayerViewModel in vlcMediaPlayerViewModels)
-            //    {
-            //        mainGrid.Children.Add(vlcMediaPlayerViewModel.View);
-            //        Grid.SetRow(vlcMediaPlayerViewModel.View, row);
-            //        Grid.SetColumn(vlcMediaPlayerViewModel.View, column++);
-            //        if (column == 4)
-            //        {
-            //            row++;
-            //            column = 0;
-            //        }
-            //    }
-            //}
 
             this.StartVideoCommand = new DelegateCommand(this.StartVlcVideos);
             this.StopVideoCommand = new DelegateCommand(this.StopVlcVideos);
-            this.SetupCommand = new DelegateCommand(this.SetupCommandHanlder);
+            this.SetupCommand = new DelegateCommand(this.SetupCommandHandler);
         }
 
         #endregion
 
-        #region Private Methods
-
-        #region Command Methods
+        #region Properties
 
         /// <summary>
-        /// Method starts all VLC videos.
+        /// Gets or sets the view.
         /// </summary>
-        /// <param name="o">
-        /// The o.
-        /// </param>
-        private void StartVlcVideos(object o)
+        public Window View
         {
-            this.Player.Play();
-        }
+            get
+            {
+                return this.view;
+            }
 
-        private int count = 0;
-
-        private RadBusyIndicator busyIndicator;
-
-        private void SetupCommandHanlder(object o)
-        {
-            if (this.count >= 15)
-                return;
-
-            var ucContentControl = new ucContentControlMedia();
-            var contentControl = ucContentControl.FindName("ContentControl") as ContentControl;
-            this.busyIndicator = ucContentControl.FindName("BusyIndicator") as RadBusyIndicator;
-            this.IsBusy = true;
-
-            var mainGrid = this.View.FindName("MainGrid") as Grid;
-            mainGrid.Children.Add(ucContentControl);
-            Grid.SetRow(ucContentControl, this.count / 4);
-            Grid.SetColumn(ucContentControl, this.count % 4);
-        
-            this.PlayVideoExpernally(contentControl);
+            set
+            {
+                this.view = value;
+                this.OnPropertyChanged("View");
+            }
         }
 
         /// <summary>
-        /// The stop vlc videos.
+        /// Gets or sets the start video command.
         /// </summary>
-        /// <param name="o">
-        /// The o.
-        /// </param>
-        private void StopVlcVideos(object o)
+        public ICommand StartVideoCommand
         {
-            this.Player.Stop();
+            get
+            {
+                return this.startVideoCommand;
+            }
+
+            set
+            {
+                this.startVideoCommand = value;
+                this.OnPropertyChanged("StartVideoCommand");
+            }
         }
 
-        #endregion
+        /// <summary>
+        /// Gets or sets the stop video command.
+        /// </summary>
+        public ICommand StopVideoCommand
+        {
+            get
+            {
+                return this.stopVideoCommand;
+            }
 
-        #endregion
+            set
+            {
+                this.stopVideoCommand = value;
+                this.OnPropertyChanged("StopVideoCommand");
+            }
+        }
 
+        /// <summary>
+        /// Gets or sets the player.
+        /// </summary>
         public IMediaPlayer Player { get; set; }
 
-        private int externalProcessId = 0;
-
-        private IMediaPlayerProxyFactory mediaPlayerProxyFactory;
-
+        /// <summary>
+        /// Gets or sets the media.
+        /// </summary>
         public UIElement Media { get; set; }
 
+        /// <summary>
+        /// Gets or sets the setup command.
+        /// </summary>
         public ICommand SetupCommand
         {
             get
             {
                 return this.setupCommand;
             }
+
             set
             {
                 this.setupCommand = value;
@@ -252,38 +184,16 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
             }
         }
 
-        public bool UiMode
-        {
-            get
-            {
-                return this.uiMode;
-            }
-            set
-            {
-                this.uiMode = value;
-                this.OnPropertyChanged("UiMode");
-            }
-        }
-
-        public bool MulitProcessMode
-        {
-            get
-            {
-                return this.mulitProcessMode;
-            }
-            set
-            {
-                this.mulitProcessMode = value;
-                this.OnPropertyChanged("MulitProcessMode");
-            }
-        }
-
+        /// <summary>
+        /// Gets or sets a value indicating whether is busy.
+        /// </summary>
         public bool IsBusy
         {
             get
             {
                 return this.isBusy;
             }
+
             set
             {
                 this.isBusy = value;
@@ -297,8 +207,44 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether is VLC player.
+        /// </summary>
+        public bool IsVlcPlayer
+        {
+            get
+            {
+                return this.isVlcPlayer;
+            }
+
+            set
+            {
+                this.isVlcPlayer = value;
+                this.OnPropertyChanged(() => this.isVlcPlayer);
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// The dispose.
+        /// </summary>
+        /// <param name="disposing">
+        /// The disposing.
+        /// </param>
+        protected override void Dispose(bool disposing)
+        {
+            this.mediaPlayerProxyFactory.Dispose();
+            base.Dispose(disposing);
+        }
+
+        /// <summary>
         /// The dispatcher service used to call to the UI thread and analyze performance
         /// </summary>
+        /// <param name="host">
+        /// The host.
+        /// </param>
         private void PlayVideoExpernally(ContentControl host)
         {
             this.mediaPlayerProxyFactory = new MediaPlayerProxyFactory();
@@ -306,6 +252,7 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
                 () =>
                 {
                     var isHostUnInitialized = true;
+
                     // need to access these properties from UI thread
                     Application.Current.Dispatcher.Invoke(
                         () =>
@@ -315,8 +262,9 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
 
                     if (isHostUnInitialized)
                     {
-                        var videoUrl = string.Format(@"C:\VideoHD\WMPMP4\4KVideo0{0}Converted.mp4", this.count++);
-                        //videoUrl = @"http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov";
+                        var videoUrl = IsVlcPlayer ? string.Format(@"C:\VideoHD\4KVideo0{0}.mp4", this.count++) : string.Format(@"C:\VideoHD\WMPMP4\4KVideo0{0}Converted.mp4", this.count++);
+
+                        // videoUrl = @"http://download.blender.org/peach/bigbuckbunny_movies/big_buck_bunny_1080p_h264.mov";
                         Trace.WriteLine(videoUrl);
                         var mediaUri =
                             new Uri(videoUrl);
@@ -334,14 +282,13 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
 
                         this.Player = this.mediaPlayerProxyFactory.GetPlayerInstance(mediaUri, this.externalProcessId);
 
-
                         this.externalProcessId = 0;
 
                         if (this.Player != null)
                         {
                             this.Player.Initialize(mediaUri.AbsoluteUri);
-
-                            this.Media = this.Player.SetupPlayerObject();
+                            var mediaType = this.IsVlcPlayer ? MediaType.VlcPlayer : MediaType.WindowMediaPlayer;
+                            this.Media = this.Player.SetupPlayerObject(mediaType);
                         }
 
                         if (this.Media != null)
@@ -359,9 +306,8 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
                         if (this.Player != null)
                         {
                             this.Player.StreamingStatusChanged += this.PlayerStreamingStatusChanged;
-                            this.Player.PlayerError += this.Player_PlayerError;
+                            this.Player.PlayerError += this.PlayerPlayerError;
                             this.Player.Play();
-
                         }
                     }
                 });
@@ -369,32 +315,98 @@ namespace Multiprocess.Issue.DemoApp.ViewModels
             workerThread.Start();
         }
 
-        void Player_PlayerError(object sender, MultiProcess.Client.EventArg.PlayerErrorEventArgs e)
+        /// <summary>
+        /// The player player error.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void PlayerPlayerError(object sender, MultiProcess.Client.EventArg.PlayerErrorEventArgs e)
         {
             Application.Current.Dispatcher.Invoke(
-            () =>
-            { MessageBox.Show(this.View, e.ErrorCode + "\n" + e.ErrorMessage, "Error"); });
-
+                () => { MessageBox.Show(this.View, e.ErrorCode + "\n" + e.ErrorMessage, "Error"); });
         }
 
+        /// <summary>
+        /// The player streaming status changed.
+        /// </summary>
+        /// <param name="status">
+        /// The status.
+        /// </param>
+        /// <param name="errorCode">
+        /// The error code.
+        /// </param>
         private void PlayerStreamingStatusChanged(ConnectionStatus status, string errorCode)
         {
             if (Application.Current != null)
             {
-
                 Application.Current.Dispatcher.Invoke(
                     () =>
                     {
                         this.IsBusy = !status.Equals(ConnectionStatus.Streaming);
                     });
             }
-
         }
 
-        protected override void Dispose(bool disposing)
+        #region Command Methods
+
+        /// <summary>
+        /// Method starts all VLC videos.
+        /// </summary>
+        /// <param name="o">
+        /// The o.
+        /// </param>
+        private void StartVlcVideos(object o)
         {
-            this.mediaPlayerProxyFactory.Dispose();
-            base.Dispose(disposing);
+            this.Player.Play();
         }
+
+        /// <summary>
+        /// The setup command handler.
+        /// </summary>
+        /// <param name="o">
+        /// The o.
+        /// </param>
+        private void SetupCommandHandler(object o)
+        {
+            if (this.count >= 15)
+            {
+                return;
+            }
+
+            var userContentControl = new ucContentControlMedia();
+            var contentControl = userContentControl.FindName("ContentControl") as ContentControl;
+            this.busyIndicator = userContentControl.FindName("BusyIndicator") as RadBusyIndicator;
+            this.IsBusy = true;
+
+            var mainGrid = this.View.FindName("MainGrid") as Grid;
+            if (mainGrid != null)
+            {
+                mainGrid.Children.Add(userContentControl);
+
+                Grid.SetRow(userContentControl, this.count / 4);
+                Grid.SetColumn(userContentControl, this.count % 4);
+            }
+
+            this.PlayVideoExpernally(contentControl);
+        }
+
+        /// <summary>
+        /// The stop VLC videos.
+        /// </summary>
+        /// <param name="o">
+        /// The o.
+        /// </param>
+        private void StopVlcVideos(object o)
+        {
+            this.Player.Stop();
+        }
+
+        #endregion
+
+        #endregion
     }
 }

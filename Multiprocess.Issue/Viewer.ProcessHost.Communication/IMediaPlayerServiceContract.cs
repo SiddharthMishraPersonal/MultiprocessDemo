@@ -145,11 +145,14 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost.Communication
         /// <param name="uri">
         /// The uri of the video stream.
         /// </param>
+        /// <param name="mediaType">
+        /// The media Type.
+        /// </param>
         /// <returns>
         /// The <see cref="IntPtr"/> handle to the player window.
         /// </returns>
         [OperationContract]
-        IntPtr SetupPlayerObject(string uri);
+        IntPtr SetupPlayerObject(string uri, MediaType mediaType);
 
         /// <summary>
         /// Sets-up and persists the callback channel on the "server".

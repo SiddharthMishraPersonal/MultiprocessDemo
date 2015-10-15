@@ -1,23 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="MediaPlayer.cs" company="Motorola Solutions inc">
+//   Demo purpose only.
+// </copyright>
+// <summary>
+//   Defines the VlcMediaPlayer type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace MultiProcess.Client.MediaPlayer
 {
+    using System;
     using System.Diagnostics;
     using System.IO;
     using System.Reflection;
     using System.Windows;
-    using System.Windows.Controls;
     using System.Windows.Forms.Integration;
 
     using MultiProcess.Client.EventArg;
 
     using Vlc.DotNet.Wpf;
 
-    public class MediaPlayer : IMediaPlayer
+    public class VlcMediaPlayer : IMediaPlayer
     {
         /// <summary>
         ///   The _player win form host.
@@ -33,16 +36,21 @@ namespace MultiProcess.Client.MediaPlayer
             set;
         }
 
-        public MediaPlayer()
+        public VlcMediaPlayer()
         {
             try
             {
+                if (!Debugger.IsAttached)
+                {
+                    Debugger.Launch();
+                }
+
                 var control = new VlcControl();
-                control.MediaPlayer.VlcLibDirectoryNeeded += MediaPlayer_VlcLibDirectoryNeeded;
-                control.MediaPlayer.Playing += MediaPlayer_Playing;
-                control.MediaPlayer.EncounteredError += MediaPlayer_EncounteredError;
-                control.MediaPlayer.Opening += MediaPlayer_Opening;
-                control.Unloaded += this.ucVLCMediaPlayerControl_Unloaded;
+                control.MediaPlayer.VlcLibDirectoryNeeded += this.MediaPlayerVlcLibDirectoryNeeded;
+                control.MediaPlayer.Playing += this.MediaPlayerPlaying;
+                control.MediaPlayer.EncounteredError += this.MediaPlayerEncounteredError;
+                control.MediaPlayer.Opening += this.MediaPlayerOpening;
+                control.Unloaded += this.UcVlcMediaPlayerControlUnloaded;
                 this.VlcControl = control;
             }
             catch (Exception)
@@ -52,34 +60,81 @@ namespace MultiProcess.Client.MediaPlayer
             }
         }
 
-        void MediaPlayer_Opening(object sender, Vlc.DotNet.Core.VlcMediaPlayerOpeningEventArgs e)
+        /// <summary>
+        /// The media player opening.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void MediaPlayerOpening(object sender, Vlc.DotNet.Core.VlcMediaPlayerOpeningEventArgs e)
         {
-            StreamingStatusChanged(ConnectionStatus.Idle, "");
+            this.StreamingStatusChanged(ConnectionStatus.Idle, string.Empty);
         }
 
-        void MediaPlayer_EncounteredError(object sender, Vlc.DotNet.Core.VlcMediaPlayerEncounteredErrorEventArgs e)
+        /// <summary>
+        /// The media player encountered error.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void MediaPlayerEncounteredError(object sender, Vlc.DotNet.Core.VlcMediaPlayerEncounteredErrorEventArgs e)
         {
-            PlayerError(sender, new PlayerErrorEventArgs(e.ToString(), "Error Occurred in VLC Media Player"));
+            this.PlayerError(sender, new PlayerErrorEventArgs(e.ToString(), "Error Occurred in VLC Media Player"));
         }
 
-        void MediaPlayer_Playing(object sender, Vlc.DotNet.Core.VlcMediaPlayerPlayingEventArgs e)
+        /// <summary>
+        /// The media player playing.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void MediaPlayerPlaying(object sender, Vlc.DotNet.Core.VlcMediaPlayerPlayingEventArgs e)
         {
-            StreamingStatusChanged(ConnectionStatus.Streaming, "");
+            this.StreamingStatusChanged(ConnectionStatus.Streaming, string.Empty);
         }
 
-        void MediaPlayer_VlcLibDirectoryNeeded(object sender, Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs e)
+        /// <summary>
+        /// The media player vlc lib directory needed.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void MediaPlayerVlcLibDirectoryNeeded(object sender, Vlc.DotNet.Forms.VlcLibDirectoryNeededEventArgs e)
         {
             var currentAssembly = Assembly.GetEntryAssembly();
             var currentDirectory = new FileInfo(currentAssembly.Location).DirectoryName;
 
             if (currentDirectory == null)
+            {
                 return;
+            }
 
             e.VlcLibDirectory = AssemblyName.GetAssemblyName(currentAssembly.Location).ProcessorArchitecture
                                 == ProcessorArchitecture.X86 ? new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\lib\WPF\x86")) : new DirectoryInfo(Path.Combine(currentDirectory, @"..\..\lib\WPF\x64"));
         }
 
-        void ucVLCMediaPlayerControl_Unloaded(object sender, RoutedEventArgs e)
+        /// <summary>
+        /// The VLC media player control unloaded.
+        /// </summary>
+        /// <param name="sender">
+        /// The sender.
+        /// </param>
+        /// <param name="e">
+        /// The e.
+        /// </param>
+        private void UcVlcMediaPlayerControlUnloaded(object sender, RoutedEventArgs e)
         {
             if (this.VlcControl.MediaPlayer.IsPlaying)
             {
@@ -87,14 +142,22 @@ namespace MultiProcess.Client.MediaPlayer
             }
         }
 
-
-        public UIElement SetupPlayerObject()
+        /// <summary>
+        /// The setup player object.
+        /// </summary>
+        /// <param name="mediaType">
+        /// The media type.
+        /// </param>
+        /// <returns>
+        /// The <see cref="UIElement"/>.
+        /// </returns>
+        public UIElement SetupPlayerObject(MediaType mediaType)
         {
-            _playerWinFormHost = new WindowsFormsHost
-            {
-                Child = this.VlcControl.MediaPlayer
-            };
-            return _playerWinFormHost;
+            this._playerWinFormHost = new WindowsFormsHost
+             {
+                 Child = this.VlcControl.MediaPlayer
+             };
+            return this._playerWinFormHost;
         }
 
         public bool Play()
@@ -126,7 +189,7 @@ namespace MultiProcess.Client.MediaPlayer
         {
             if (StreamingStatusChanged != null)
             {
-                StreamingStatusChanged(status, errorCode);
+                this.StreamingStatusChanged(status, errorCode);
             }
         }
 

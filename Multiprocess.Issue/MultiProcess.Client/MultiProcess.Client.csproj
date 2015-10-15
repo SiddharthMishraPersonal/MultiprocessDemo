@@ -50,6 +50,18 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Vlc.DotNet.Core">
+      <HintPath>..\packages\Vlc.DotNet.Core.2.1.62\lib\net45\x64\Vlc.DotNet.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Core.Interops">
+      <HintPath>..\packages\Vlc.DotNet.Core.Interops.2.1.62\lib\net45\x64\Vlc.DotNet.Core.Interops.dll</HintPath>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Forms">
+      <HintPath>..\packages\Vlc.DotNet.Forms.2.1.62\lib\net45\x64\Vlc.DotNet.Forms.dll</HintPath>
+    </Reference>
+    <Reference Include="Vlc.DotNet.Wpf">
+      <HintPath>..\packages\Vlc.DotNet.Wpf.2.1.62\lib\net45\x64\Vlc.DotNet.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
@@ -60,6 +72,9 @@
     <Compile Include="IMediaPlayer.cs" />
     <Compile Include="IPlayerChannel.cs" />
     <Compile Include="MediaPlayer\AxWindowMediaPlayer.cs" />
+    <Compile Include="MediaPlayer\MediaPlayer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StreamingStatistics.cs" />
     <Compile Include="Volume.cs" />

@@ -16,25 +16,22 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <!--
-            <GroupBox
-            Grid.Row="0"
-            Header="Select Modes and Add Video">
-            <StackPanel Orientation="Horizontal">
-            <StackPanel Orientation="Vertical">
-            <RadioButton
-            Content="MultiProcess Mode"
-            IsChecked="True" />
-            <RadioButton Content="UI Thread Host Mode" />
-            </StackPanel>
-            </StackPanel>
-            </GroupBox>
-        -->
         <StackPanel
             Grid.Row="0"
+            Margin="5"
             HorizontalAlignment="Right"
             VerticalAlignment="Stretch"
             Orientation="Horizontal">
+            <RadioButton
+                Margin="10,10,0,10"
+                Content="VLC Player"
+                IsChecked="{Binding IsVlcPlayer}" />
+            <RadioButton
+                Margin="10,10,0,10"
+                Content="Window Media Player"
+                IsChecked="{Binding
+                    IsVlcPlayer,
+                    Converter={StaticResource InvertedBooleanConverter}}" />
             <Button
                 MinWidth="100"
                 Margin="10"
@@ -45,22 +42,6 @@
                 IsEnabled="{Binding
                     IsBusy,
                     Converter={StaticResource InvertedBooleanConverter}}" />
-            <!--
-                <Button
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="Play All"
-                Margin="10"
-                Command="{Binding StartVideoCommand}"
-                MinWidth="100"></Button>
-                <Button
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Content="Stop All"
-                Margin="10"
-                Command="{Binding StopVideoCommand}"
-                MinWidth="100"></Button>
-            -->
         </StackPanel>
         <Grid
             x:Name="MainGrid"

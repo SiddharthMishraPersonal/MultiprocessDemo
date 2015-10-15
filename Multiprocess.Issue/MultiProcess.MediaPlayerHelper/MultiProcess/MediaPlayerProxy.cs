@@ -197,7 +197,16 @@ namespace MultiProcess.MediaPlayerHelper
             }
         }
 
-        public System.Windows.UIElement SetupPlayerObject()
+        /// <summary>
+        /// The setup player object.
+        /// </summary>
+        /// <param name="mediaType">
+        /// The media type.
+        /// </param>
+        /// <returns>
+        /// The <see cref="UIElement"/>.
+        /// </returns>
+        public UIElement SetupPlayerObject(MediaType  mediaType)
         {
             lock (this.setupLock)
             {
@@ -236,7 +245,7 @@ namespace MultiProcess.MediaPlayerHelper
                     return null;
                 }
 
-                var hostHandle = this.SafeChannelCall(() => this.mediaPlayerServiceProxy.SetupPlayerObject(this.channelUri), IntPtr.Zero);
+                var hostHandle = this.SafeChannelCall(() => this.mediaPlayerServiceProxy.SetupPlayerObject(this.channelUri, mediaType), IntPtr.Zero);
 
 
                 if (Application.Current != null)

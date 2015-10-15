@@ -22,7 +22,7 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
     using MultiProcess.Client.MediaPlayer;
 
     using Viewer.ProcessHost.Communication;
-    
+
     /// <summary>
     /// Class for interfacing between actual MediaPlayer and WCF client.
     /// </summary>
@@ -195,9 +195,9 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// <returns>
         /// The <see cref="IntPtr"/> handle to the player window.
         /// </returns>
-        public IntPtr SetupPlayerObject(string uri)
+        public IntPtr SetupPlayerObject(string uri, MediaType mediaType)
         {
-            return this.SafePlayerCall(() => this.SetupPlayerObjectImpl(uri), IntPtr.Zero);
+            return this.SafePlayerCall(() => this.SetupPlayerObjectImpl(uri, mediaType), IntPtr.Zero);
         }
 
         /// <summary>
@@ -441,21 +441,31 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
         /// Calls SetupPlayerObject on the IMediaPlayer, but returns a handle rather than the actual UIElement.
         /// </summary>
         /// <param name="uri">
-        /// The uri of the video stream.
+        /// The URL of the video stream.
+        /// </param>
+        /// <param name="mediaType">
+        /// The media Type.
         /// </param>
         /// <returns>
         /// The <see cref="IntPtr"/> handle to the player window.
         /// </returns>
-        private IntPtr SetupPlayerObjectImpl(string uri)
+        private IntPtr SetupPlayerObjectImpl(string uri, MediaType mediaType)
         {
             //Debugger.Launch();
             Trace.WriteLine("Called SetupPlayerObjectImpl(string uri)");
             Trace.WriteLine(uri);
 
-            this.MediaPlayer = new AxWindowMediaPlayer();
-            this.MediaPlayer.StreamingStatusChanged += MediaPlayer_StreamingStatusChanged;
+            switch (mediaType)
+            {
+                case MediaType.VlcPlayer: this.MediaPlayer = new VlcMediaPlayer();
+                    break;
+                case MediaType.WindowMediaPlayer: this.MediaPlayer = new AxWindowMediaPlayer();
+                    break;
+            }
+
+            this.MediaPlayer.StreamingStatusChanged += this.MediaPlayer_StreamingStatusChanged;
             Trace.WriteLine(this.MediaPlayer);
-            var hostedControl = this.MediaPlayer.SetupPlayerObject();
+            var hostedControl = this.MediaPlayer.SetupPlayerObject(mediaType);
 
             if (!this.Initialize(uri))
             {
@@ -468,12 +478,12 @@ namespace Motorola.IVS.Client.Viewer.ProcessHost
             {
 
                 this.HostForm.Content = hostedControl;
-                (this.HostForm as ProcessHostForm).Show();
-                //var processHostForm = this.HostForm as ProcessHostForm;
-                //if (processHostForm != null)
-                //{
-                //    processHostForm.ShowWindow();
-                //}
+                var processHostForm = this.HostForm as ProcessHostForm;
+                if (processHostForm != null)
+                {
+                    processHostForm.Show();
+                }
+
                 windowHelper = new WindowInteropHelper(this.HostForm);
             }
 
